@@ -52,5 +52,14 @@
        {{ $users->onEachSide(3)->links() }}
         <br/>
         <a href="{{ route('users.create') }}">Create new User</a>
+        @if ($errors->any())
+            <div class="alert-errors">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </body>
 </html>
