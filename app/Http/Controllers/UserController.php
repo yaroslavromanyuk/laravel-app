@@ -70,7 +70,7 @@ class UserController extends Controller
             $userData['password'] = $passwordHash;
             $user = User::create($userData);
             $user->save();
-            return Redirect::to('users');
+            return Redirect::route('users.index');
         } catch (Throwable $error) {
             $this->logger->critical($error);
             return Redirect::to('users/create')->withErrors('Something went wrong. See logs for details.');
