@@ -1,14 +1,9 @@
 <html lang="en">
-    <body>
-    <style>
-        table, th, td {
-            border: 1px solid #000000;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <head>
+        <title>All users</title>
+        @vite('dist/output.css')
+    </head>
+    <body class="p-2">
     <script>
         function removeUser(id) {
             if (window.confirm('Do you really want to delete this user?')) {
@@ -16,30 +11,36 @@
             }
         }
     </script>
-    <h1>Users:</h1>
-       <table class="users-table">
+    <h1 class="font-bold">Users:</h1>
+       <table class="border-separate border border-slate-400">
            <thead>
            <tr>
-               <th>Id</th>
-               <th>Name</th>
-               <th>Email</th>
-               <th>Email Verified At</th>
-               <th>Created At</th>
-               <th>Updated At</th>
+               <th class="border border-slate-300 font-bold">Id</th>
+               <th class="border border-slate-300 font-bold">Name</th>
+               <th class="border border-slate-300 font-bold">Email</th>
+               <th class="border border-slate-300 font-bold">Email Verified At</th>
+               <th class="border border-slate-300 font-bold">Created At</th>
+               <th class="border border-slate-300 font-bold">Updated At</th>
            </tr>
            </thead>
            <tbody>
                @foreach ($users as $user)
-                   <tr>
-                       <td>{{ $user->id }}</td>
-                       <td>{{ $user->name }}</td>
-                       <td>{{ $user->email }}</td>
-                       <td>{{ $user->email_verified_at }}</td>
-                       <td>{{ $user->created_at }}</td>
-                       <td>{{ $user->updated_at }}</td>
-                       <td><a href="{{ route('users.show', ['user' => $user->id]) }}">Show</a></td>
-                       <td>
-                           <a href="" onClick="event.preventDefault(); removeUser({{ $user->id }});">Delete</a>
+                   <tr class="odd:bg-slate-100 even:bg-white">
+                       <td class="border border-slate-300">{{ $user->id }}</td>
+                       <td class="border border-slate-300">{{ $user->name }}</td>
+                       <td class="border border-slate-300">{{ $user->email }}</td>
+                       <td class="border border-slate-300">{{ $user->email_verified_at }}</td>
+                       <td class="border border-slate-300">{{ $user->created_at }}</td>
+                       <td class="border border-slate-300">{{ $user->updated_at }}</td>
+                       <td class="border border-slate-300">
+                           <button class="bg-cyan-700 hover:bg-cyan-500 p-1 border-r rounded-md w-14">
+                                <a href="{{ route('users.show', ['user' => $user->id]) }}">Show</a>
+                           </button>
+                       </td>
+                       <td class="border border-slate-300">
+                           <button class="bg-red-600 hover:bg-red-500 p-1 border-r rounded-md w-14">
+                                <a href="" onClick="event.preventDefault(); removeUser({{ $user->id }});">Delete</a>
+                           </button>
                            <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', ['user' => $user->id]) }}"
                                  method="POST" style="display: none;">
                                @csrf
@@ -51,7 +52,9 @@
        </table>
        {{ $users->onEachSide(3)->links() }}
         <br/>
-        <a href="{{ route('users.create') }}">Create new User</a>
+        <button class="bg-cyan-700 hover:bg-cyan-500 p-2 border-r rounded-lg">
+            <a href="{{ route('users.create') }}">Create new User</a>
+        </button>
         @if ($errors->any())
             <div class="alert-errors">
                 <ul>
