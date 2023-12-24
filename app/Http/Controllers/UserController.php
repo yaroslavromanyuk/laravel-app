@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -43,6 +45,8 @@ class UserController extends Controller
      */
     public function create(): View
     {
+        Gate::authorize('create_user');
+
         return view('user.create');
     }
 
@@ -55,6 +59,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $userData = $this->getUserDataFromRequest($request);
+        $userData['creator_user_id'] = Auth::id();
         $validator = Validator::make($userData, $this->getValidationRules());
         if ($validator->fails()) {
             return Redirect::to('users/create')->withErrors($validator->messages());
@@ -80,6 +85,8 @@ class UserController extends Controller
      */
     public function show(User $user): View
     {
+        Gate::authorize('view_user');
+
         return view('user.show', ['user' => $user]);
     }
 
@@ -91,6 +98,8 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
+        Gate::authorize('edit_user', $user);
+
         return view('user.edit', ['user' => $user]);
     }
 
@@ -103,7 +112,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
-        $userData =$this->getUserDataFromRequest($request);
+        $userData = $this->getUserDataFromRequest($request);
         $validator = Validator::make($userData, $this->getValidationRules());
         if ($validator->fails()) {
             return Redirect::route('users.edit', [ $user->id])->withErrors($validator->messages());
@@ -129,7 +138,10 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
+        Gate::authorize('delete_user', $user);
+
         $user->delete();
+
         return Redirect::to('users');
     }
 

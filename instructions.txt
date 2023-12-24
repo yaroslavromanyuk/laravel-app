@@ -1,0 +1,4 @@
+Запуск сервера:
+cd laravel-app
+php artisan serve
+http://127.0.0.1:8000/

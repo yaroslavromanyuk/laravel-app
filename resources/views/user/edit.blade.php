@@ -5,7 +5,7 @@
                 color: red;
             }
         </style>
-        <h1>Create New User</h1>
+        <h1>Edit User</h1>
         <a href="{{ route('users.show', ['user' => $user->id]) }}">Back</a>
         <br /><br />
         <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST">
